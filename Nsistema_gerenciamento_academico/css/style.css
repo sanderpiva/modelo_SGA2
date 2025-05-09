@@ -1,0 +1,330 @@
+/* Estilos para o container do formulário de login do professor */
+.form_container {
+    background-color: white; /* Fundo branco para o formulário */
+    padding: 30px; /* Espaçamento interno ao redor do formulário */
+    border-radius: 8px; /* Bordas arredondadas para o formulário */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave para destacar o formulário */
+    width: 100%; /* Ocupa toda a largura do container pai (centralizado) */
+    max-width: 400px; /* Largura máxima para não ficar muito largo em telas maiores */
+    margin-bottom: 20px; /* Espaçamento abaixo do formulário */
+    
+}
+
+/* Estilos para o formulário em si */
+.form {
+    display: flex;
+    flex-direction: column; /* Organiza os elementos do formulário em coluna */
+    align-items: stretch; /* Faz os elementos internos ocuparem a largura total do formulário */
+    text-align: left; /* Alinha o texto dos labels à esquerda */
+    font-family: sans-serif; /* Mantém a fonte padrão */
+    
+}
+
+.form h2 {
+    color: #333; /* Cor do título */
+    text-align: center; /* Centraliza o título dentro do formulário */
+    margin-bottom: 20px; /* Espaçamento abaixo do título */
+}
+
+.form label {
+    margin-bottom: 5px; /* Espaçamento abaixo de cada label */
+    color: #555; /* Cor da label */
+    font-weight: bold; /* Deixa a label em negrito */
+}
+
+.form input[type="text"],
+.form input[type="password"],
+.form select {
+    padding: 10px; /* Espaçamento interno dos campos de entrada e select */
+    margin-bottom: 15px; /* Espaçamento abaixo dos campos de entrada e select */
+    border: 1px solid #ddd; /* Borda suave */
+    border-radius: 4px; /* Bordas arredondadas dos campos */
+    box-sizing: border-box; /* Garante que padding e border não aumentem a largura total */
+    font-size: 16px; /* Tamanho da fonte dos campos */
+}
+
+.form button[type="submit"] {
+    background-color: #007bff; /* Cor de fundo do botão */
+    color: white; /* Cor do texto do botão */
+    padding: 10px 20px; /* Espaçamento interno do botão */
+    border: none; /* Remove a borda padrão do botão */
+    border-radius: 4px; /* Bordas arredondadas do botão */
+    cursor: pointer; /* Altera o cursor ao passar por cima */
+    font-size: 16px; /* Tamanho da fonte do botão */
+    transition: background-color 0.3s ease; /* Transição suave na cor de fundo */
+}
+
+.form button[type="submit"]:hover {
+    background-color: #0056b3; /* Cor de fundo mais escura ao passar o mouse */
+}
+
+/* Estilos para o link "Home Page" */
+.btn_home {
+    text-align: center; /* Garante que o link fique centralizado */
+    margin-top: 20px; /* Adiciona um espaço acima do link */
+}
+
+.btn_home a {
+    color: #007bff; /* Cor do link */
+    text-decoration: none; /* Remove o sublinhado padrão */
+    font-weight: bold; /* Deixa o link em negrito para destacar */
+}
+
+.btn_home a:hover {
+    text-decoration: underline; /* Adiciona sublinhado ao passar o mouse */
+}
+
+/* Mantenha os outros estilos que você já tem (footer, hr, etc.) */
+footer {
+    margin-top: auto;
+    margin-bottom: 0%;
+    text-align: center;
+    padding: 10px;
+    background-color: #f4f4f4;
+    max-width: 100%;
+    width: 100%;
+}
+
+
+hr {
+    border: 1px solid #eee;
+    margin: 20px 0;
+}
+
+a{
+    text-decoration: none;
+    font-style: italic;
+}
+.servicos_forms{
+    background-color: #dee1df;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+    font-family: sans-serif;
+}
+
+.servicos{
+    margin-top: 380px;
+}
+
+h1{
+    text-align: center;
+    font-size: 30px;
+    font-family: sans-serif;
+    padding: 10px;
+}
+#cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.card img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+#proporcao_form, #proporcao_result, #porcentagem_form, #porcentagem_result, #pg_form, #pg_result, #pa_form, #pa_result {
+    width: 400px;
+    margin: 0 auto;
+    font-family: sans-serif;
+    text-align: justify;
+
+}
+
+.titulo_proporcao, .titulo_porcentagem, .titulo_pg, .titulo_pa{
+    text-align:left;
+    padding: 0;
+}
+
+#proporcao_result, #porcentagem_result, #pg_result, #pa_result {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.btn_dashboard{
+
+    background-color: #d320a9;
+    border: none;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 12px;
+    width: 80px;
+    
+}
+
+.btn_calcular{
+
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 12px;
+    width: 100px;
+}
+
+.check{
+    width:50px;
+    height:50px;
+    margin:auto;
+}
+
+
+.btn_prova{
+
+    display: grid; 
+    place-items: center;
+    text-decoration: none;
+    font-size: 20px;
+    font-family: sans-serif;
+    cursor: pointer;
+}
+
+.btn_home{
+    text-align: center;
+}
+
+.img_home{
+    
+    text-align: center;
+    
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: sans-serif;
+}
+
+th, td {
+    border: 1px solid #aaa; /* Cor cinza mais escura */
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+tbody tr {
+    border-bottom: 1px solid #aaa; /* Cor cinza mais escura */
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+.container {
+    display: flex; /* Habilita o Flexbox para o container principal */
+    align-items: flex-start; /* Alinha os itens ao topo */
+    padding: 20px;
+    width: 80%; /* Ajuste a largura conforme necessário */
+    max-width: 900px; /* Largura máxima para telas maiores */
+    margin: 0 auto; /* Centraliza o container na tela */
+    flex-direction: column; /* Organiza os filhos em coluna */
+}
+
+.sections-wrapper {
+    display: flex; /* Habilita o Flexbox para as seções */
+    width: 100%; /* Garante que as seções ocupem a largura do container */
+    justify-content: space-between; /* Espaça as seções horizontalmente */
+    margin-bottom: 20px; /* Adiciona espaço abaixo das seções */
+}
+
+.section {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: calc(50% - 10px); /* Cada seção ocupa metade da largura menos o espaço entre elas */
+    box-sizing: border-box; /* Garante que padding e border não aumentem a largura */
+}
+
+.section h2 {
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center; /* Centraliza o título dentro de cada seção */
+}
+
+.button-grid {
+    display: flex; /* Alinha os botões em linha */
+    flex-direction: column; /* Organiza os botões em coluna dentro de cada seção */
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%; /* Garante que os botões ocupem a largura da seção */
+}
+
+.button-grid button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Garante que os botões ocupem a largura da coluna */
+    box-sizing: border-box; /* Garante que padding e border não aumentem a largura */
+}
+
+.button-grid button:hover {
+    background-color: #0056b3;
+}
+
+.home-link {
+    text-align: center;
+    width: 100%; /* Garante que o link ocupe a largura total abaixo das colunas */
+    margin-top: 20px; /* Adiciona espaço acima do link */
+}
+
+.home-link a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.home-link a:hover {
+    text-decoration: underline;
+}
+
+footer.servicos {
+    text-align: center;
+    padding: 10px;
+    background-color: #f4f4f4;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.buttonInicioProfessor {
+    background-color: #168019;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 50px;
+}
+
+
+.buttonInicioAluno {
+    background-color: rgb(33, 33, 115);
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 50px;
+}
