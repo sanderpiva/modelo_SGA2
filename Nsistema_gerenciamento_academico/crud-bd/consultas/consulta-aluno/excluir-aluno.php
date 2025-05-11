@@ -1,5 +1,6 @@
 <?php
 require_once "../conexao.php";
+
 if (isset($_GET['id_aluno']) && !empty($_GET['id_aluno'])) {
     $id_aluno = $_GET['id_aluno'];
 

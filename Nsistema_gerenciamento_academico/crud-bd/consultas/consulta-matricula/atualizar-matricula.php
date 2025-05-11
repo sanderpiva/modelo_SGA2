@@ -3,47 +3,71 @@ require_once '../conexao.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
-    if (!isset($_POST['original_id_aluno']) || empty($_POST['original_id_aluno']) ||
-        !isset($_POST['original_id_disciplina']) || empty($_POST['original_id_disciplina']) ||
-        !isset($_POST['aluno_matricula']) || empty($_POST['aluno_matricula']) ||
-        !isset($_POST['disciplina_id']) || empty($_POST['disciplina_id'])) {
-        $error = "Dados incompletos para atualizar a matrícula.";
-        header("Location: ../../consultas/consultaMatricula/formMatricula.php?id_aluno=" . urlencode(isset($_POST['original_id_aluno']) ? $_POST['original_id_aluno'] : '') . "&id_disciplina=" . urlencode(isset($_POST['original_id_disciplina']) ? $_POST['original_id_disciplina'] : '') . "&erros=" . urlencode($error));
+    $original_aluno_id = $_POST['original_aluno_id'];
+    $original_disciplina_id = $_POST['original_disciplina_id'];
+    $novo_aluno_id = $_POST['aluno_id']; 
+    $nova_disciplina_id = $_POST['disciplina_id'];
+
+    if ($original_aluno_id === false || $original_aluno_id === null ||
+        $original_disciplina_id === false || $original_disciplina_id === null ||
+        $novo_aluno_id === false || $novo_aluno_id === null ||
+        $nova_disciplina_id === false || $nova_disciplina_id === null) {
+
+        $error = "Dados de atualização inválidos ou incompletos.";
+        header("Location: form-matricula.php?id_aluno=" . urlencode($original_aluno_id ?? '') . "&id_disciplina=" . urlencode($original_disciplina_id ?? '') . "&error=" . urlencode($error));
         exit();
     }
 
-    $original_id_aluno = $_POST['original_id_aluno'];
-    $original_id_disciplina = $_POST['original_id_disciplina'];
-    $modificado_id_aluno = $_POST['aluno_matricula'];
-    $modificado_id_disciplina = $_POST['disciplina_id'];
+    try {
+        $checkStmt = $conexao->prepare("SELECT COUNT(*) FROM matricula
+                                        WHERE Aluno_id_aluno = :novo_aluno_id
+                                        AND Disciplina_id_disciplina = :nova_disciplina_id
+                                        AND NOT (Aluno_id_aluno = :original_aluno_id AND Disciplina_id_disciplina = :original_disciplina_id)");
+        $checkStmt->execute([
+            ':novo_aluno_id' => $novo_aluno_id,
+            ':nova_disciplina_id' => $nova_disciplina_id,
+            ':original_aluno_id' => $original_aluno_id,
+            ':original_disciplina_id' => $original_disciplina_id
+        ]);
+        $count = $checkStmt->fetchColumn();
 
-    $stmt = $conexao->prepare("UPDATE matricula SET
-        Aluno_id_aluno = :modificado_aluno_id,
-        Disciplina_id_disciplina = :modificado_disciplina_id
-        WHERE Aluno_id_aluno = :original_aluno_id
-        AND Disciplina_id_disciplina = :original_disciplina_id");
+        if ($count > 0) {
+            $error = "Não foi possível atualizar a matrícula. Esta combinação Aluno/Disciplina já existe.";
+            header("Location: form-matricula.php?id_aluno=" . urlencode($original_aluno_id) . "&id_disciplina=" . urlencode($original_disciplina_id) . "&error=" . urlencode($error));
+            exit();
+        }
 
-    $stmt->execute([
-        ':modificado_aluno_id' => $modificado_id_aluno,
-        ':modificado_disciplina_id' => $modificado_id_disciplina,
-        ':original_aluno_id' => $original_id_aluno,
-        ':original_disciplina_id' => $original_id_disciplina
-    ]);
+        $stmt = $conexao->prepare("UPDATE matricula SET
+            Aluno_id_aluno = :novo_aluno_id,
+            Disciplina_id_disciplina = :nova_disciplina_id
+            WHERE Aluno_id_aluno = :original_aluno_id
+            AND Disciplina_id_disciplina = :original_disciplina_id");
 
-    if ($stmt->rowCount() > 0) {
-        $message = "Matrícula do Aluno ID " . htmlspecialchars($modificado_id_aluno) .
-                   " na Disciplina ID " . htmlspecialchars($modificado_id_disciplina) . " atualizada com sucesso!";
-        header("Location: ../../consultas/consultaMatricula/consultaMatricula.php?message=" . urlencode($message));
-        exit();
-    } else {
-        $error = "Erro ao atualizar a matrícula. Verifique os IDs.";
-        header("Location: ../../cadastros/cadastroMatricula/formMatricula.php?id_aluno=" . urlencode($original_id_aluno) . "&id_disciplina=" . urlencode($original_id_disciplina) . "&erros=" . urlencode($error));
+        $stmt->execute([
+            ':novo_aluno_id' => $novo_aluno_id,
+            ':nova_disciplina_id' => $nova_disciplina_id,
+            ':original_aluno_id' => $original_aluno_id,
+            ':original_disciplina_id' => $original_disciplina_id
+        ]);
+
+        if ($stmt->rowCount() > 0) {
+            header("Location: ../../consultas/consulta-matricula/consulta-matricula.php?message=" . urlencode($message));
+            exit();
+        } else {
+            $error = "Nenhuma matrícula encontrada para atualizar com os IDs originais fornecidos, ou os novos dados são idênticos aos antigos.";
+            header("Location: form-matricula.php?id_aluno=" . urlencode($original_aluno_id) . "&id_disciplina=" . urlencode($original_disciplina_id) . "&error=" . urlencode($error));
+            exit();
+        }
+
+    } catch (PDOException $e) {
+        $error = "Erro no banco de dados ao atualizar matrícula: " . $e->getMessage();
+        header("Location: form-matricula.php?id_aluno=" . urlencode($original_aluno_id) . "&id_disciplina=" . urlencode($original_disciplina_id) . "&error=" . urlencode($error));
         exit();
     }
 
 } else {
     $error = "Requisição inválida para atualização de matrícula.";
-    header("Location: ../../consultas/consultaMatricula/consultaMatricula.php?erros=" . urlencode($error));
+    header("Location: ../../consultas/consulta-matricula/consulta-matricula.php?error=" . urlencode($error));
     exit();
 }
 ?>

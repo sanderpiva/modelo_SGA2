@@ -39,27 +39,27 @@ if (isset($_GET['id_resposta']) && !empty($_GET['id_resposta'])) {
         } else {
              // Busca informações para exibição na tela de atualização
             $questaoStmt = $conexao->prepare("SELECT descricao FROM questoes WHERE id_questao = :id");
-            $questaoStmt->execute([':id' => ($respostaData['Questoes_id_questao'] ?? null)]); // Usando ?? null para segurança
+            $questaoStmt->execute([':id' => ($respostaData['Questoes_id_questao'] ?? null)]);
             $questao = $questaoStmt->fetch(PDO::FETCH_ASSOC);
             $descricaoQuestaoAtual = htmlspecialchars($questao['descricao'] ?? '');
 
             $provaStmt = $conexao->prepare("SELECT codigoProva FROM prova WHERE id_prova = :id");
-            $provaStmt->execute([':id' => ($respostaData['Questoes_Prova_id_prova'] ?? null)]); // Usando ?? null para segurança
+            $provaStmt->execute([':id' => ($respostaData['Questoes_Prova_id_prova'] ?? null)]); 
             $prova = $provaStmt->fetch(PDO::FETCH_ASSOC);
             $codigoProvaAtual = htmlspecialchars($prova['codigoProva'] ?? '');
 
-            $disciplinaStmt = $conexao->prepare("SELECT nome, Professor_id_professor FROM disciplina WHERE id_disciplina = :id"); // *** MODIFICAÇÃO: Buscar o ID do professor também na atualização ***
-            $disciplinaStmt->execute([':id' => ($respostaData['Questoes_Prova_Disciplina_id_disciplina'] ?? null)]); // Usando ?? null para segurança
+            $disciplinaStmt = $conexao->prepare("SELECT nome, Professor_id_professor FROM disciplina WHERE id_disciplina = :id"); 
+            $disciplinaStmt->execute([':id' => ($respostaData['Questoes_Prova_Disciplina_id_disciplina'] ?? null)]); 
             $disciplinaInfo = $disciplinaStmt->fetch(PDO::FETCH_ASSOC);
             $nomeDisciplinaAtual = htmlspecialchars($disciplinaInfo['nome'] ?? '');
             
             $professorStmt = $conexao->prepare("SELECT nome FROM professor WHERE id_professor = :id");
-            $professorStmt->execute([':id' => ($respostaData['Questoes_Prova_Disciplina_Professor_id_professor'] ?? null)]); // Usando ?? null para segurança
+            $professorStmt->execute([':id' => ($respostaData['Questoes_Prova_Disciplina_Professor_id_professor'] ?? null)]); 
             $professor = $professorStmt->fetch(PDO::FETCH_ASSOC);
             $nomeProfessorAtual = htmlspecialchars($professor['nome'] ?? '');
 
             $alunoStmt = $conexao->prepare("SELECT nome FROM aluno WHERE id_aluno = :id");
-            $alunoStmt->execute([':id' => ($respostaData['Aluno_id_aluno'] ?? null)]); // Usando ?? null para segurança
+            $alunoStmt->execute([':id' => ($respostaData['Aluno_id_aluno'] ?? null)]); 
             $aluno = $alunoStmt->fetch(PDO::FETCH_ASSOC);
             $nomeAlunoAtual = htmlspecialchars($aluno['nome'] ?? '');
 
@@ -159,10 +159,9 @@ if (isset($_GET['id_resposta']) && !empty($_GET['id_resposta'])) {
             <?php endif; ?>
             <hr>
 
-
             <label for="id_professor">Professor:</label>
             <?php if ($isUpdating): ?>
-                 <input type="text" value="<?php echo $nomeProfessorAtual; ?>" readonly required>
+                <input type="text" value="<?php echo $nomeProfessorAtual; ?>" readonly required>
                 <input type="hidden" name="id_professor" value="<?php echo htmlspecialchars($respostaData['Questoes_Prova_Disciplina_Professor_id_professor'] ?? ''); ?>">
                 <hr>
             <?php else: ?>
@@ -170,7 +169,7 @@ if (isset($_GET['id_resposta']) && !empty($_GET['id_resposta'])) {
                     <option value="">Selecione um professor</option>
                     <?php foreach ($professores as $professor): ?>
                         <option value="<?= htmlspecialchars($professor['id_professor']) ?>">
-                             <?php // *** CORREÇÃO: O seu código original mostrava o nome 2x, agora mostra 1x *** ?>
+                             <?php ?>
                             <?= htmlspecialchars($professor['nome']) ?>
                         </option>
                     <?php endforeach; ?>
@@ -192,8 +191,6 @@ if (isset($_GET['id_resposta']) && !empty($_GET['id_resposta'])) {
                 </select>
             <?php endif; ?>
              <hr>
-
-
             <button type="submit"><?php echo $isUpdating ? 'Atualizar' : 'Cadastrar'; ?></button>
         </form>
 
