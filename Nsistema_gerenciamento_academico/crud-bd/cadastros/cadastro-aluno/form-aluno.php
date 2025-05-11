@@ -45,7 +45,7 @@ if (isset($_GET['id_aluno'])) {
 
             <label for="matricula">Matrícula:</label>
             <?php if ($isUpdating): ?>
-                <input type="text" name="matricula" id="matricula" placeholder="Digite a matrícula" value="<?php echo htmlspecialchars($alunoData['matricula']); ?>" required readonly>
+                <input type="text" name="matricula" id="matricula" placeholder="Digite a matrícula" value="<?php echo htmlspecialchars($alunoData['matricula']); ?>" required>
                 <input type="hidden" name="id_aluno" value="<?php echo htmlspecialchars($alunoData['id_aluno']); ?>">
             <?php else: ?>
                 <input type="text" name="matricula" id="matricula" placeholder="Digite a matrícula" required>
