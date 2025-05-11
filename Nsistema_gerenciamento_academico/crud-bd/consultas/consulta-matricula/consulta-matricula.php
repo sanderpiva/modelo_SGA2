@@ -17,50 +17,62 @@
             <tr>
                 <th>Aluno</th>
                 <th>Disciplina</th>
+                <th>Código Turma</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
             <?php
+            
             require_once '../conexao.php';
 
             try {
+                
                 $stmt = $conexao->query("
                     SELECT
                         m.Aluno_id_aluno,
                         m.Disciplina_id_disciplina,
                         a.nome AS nome_aluno,
-                        d.nome AS nome_disciplina
+                        d.nome AS nome_disciplina,
+                        t.codigoTurma AS codigo_turma -- Seleciona o código da turma (verifique o nome da coluna na sua tabela turma)
                     FROM
                         matricula m
                     JOIN
                         aluno a ON m.Aluno_id_aluno = a.id_aluno
                     JOIN
                         disciplina d ON m.Disciplina_id_disciplina = d.id_disciplina
+                    JOIN
+                        turma t ON a.Turma_id_turma = t.id_turma -- Junta com a tabela turma (verifique o nome da chave estrangeira em 'aluno' e da chave primária em 'turma')
                 ");
                 $matriculas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 if (count($matriculas) > 0) {
                     foreach ($matriculas as $matricula) {
+                        
+                        $codigo_turma = htmlspecialchars($matricula['codigo_turma']); // Use o alias definido na query (codigo_turma)
                         $id_aluno = htmlspecialchars($matricula['Aluno_id_aluno']);
                         $id_disciplina = htmlspecialchars($matricula['Disciplina_id_disciplina']);
                         $nome_aluno = htmlspecialchars($matricula['nome_aluno']);
                         $nome_disciplina = htmlspecialchars($matricula['nome_disciplina']);
 
                         echo "<tr>";
-                        echo "<td>$nome_aluno</td>";
-                        echo "<td>$nome_disciplina</td>";
-                        echo "<td id='buttons-wrapper'>";
+                        
+                        echo "<td>$nome_aluno</td>";        
+                        echo "<td>$nome_disciplina</td>";    
+                        echo "<td>$codigo_turma</td>";      
+                        echo "<td id='buttons-wrapper'>";    
                         echo "<button onclick='atualizarMatricula(\"$id_aluno\", \"$id_disciplina\")'><i class='fa-solid fa-pen'></i> Atualizar</button>";
                         echo "<button onclick='exclusaoEmDesenvolvimento(\"$id_aluno\")'><i class='fa-solid fa-trash'></i> Excluir</button>";
                         echo "</td>";
                         echo "</tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='3'>Nenhuma matrícula encontrada.</td></tr>";
+                    
+                    echo "<tr><td colspan='4'>Nenhuma matrícula encontrada.</td></tr>";
                 }
             } catch (PDOException $e) {
-                echo "<tr><td colspan='3'>Erro ao consultar matrículas: " . $e->getMessage() . "</td></tr>";
+                
+                echo "<tr><td colspan='4'>Erro ao consultar matrículas: " . $e->getMessage() . "</td></tr>";
             }
             ?>
         </tbody>
@@ -71,12 +83,14 @@
 
     <script>
         function atualizarMatricula(id_aluno, id_disciplina) {
+            
             window.location.href = "../../cadastros/cadastro-matricula/form-matricula.php?id_aluno=" + encodeURIComponent(id_aluno) + "&id_disciplina=" + encodeURIComponent(id_disciplina);
         }
 
         function exclusaoEmDesenvolvimento(id_aluno) {
             const confirmar = confirm("Tem certeza que deseja excluir todas as matrículas do aluno com ID: " + id_aluno + "?");
             if (confirmar) {
+                
                 window.location.href = "excluir-matricula.php?id_aluno=" + encodeURIComponent(id_aluno);
             }
         }
