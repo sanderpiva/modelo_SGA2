@@ -2,6 +2,12 @@
 require_once '../conexao.php';
 
 $disciplinas = $conexao->query("SELECT * FROM disciplina")->fetchAll(PDO::FETCH_ASSOC);
+$professores = $conexao->query("SELECT * FROM professor")->fetchAll(PDO::FETCH_ASSOC);
+
+$professorsLookup = [];
+foreach ($professores as $professor) {
+    $professorsLookup[$professor['id_professor']] = $professor['nome'];
+}
 
 $isUpdating = false;
 $conteudoData = [];
@@ -11,7 +17,8 @@ $nomeDisciplinaAtual = '';
 if (isset($_GET['id_conteudo'])) {
     $idConteudoToUpdate = $_GET['id_conteudo'];
 
-    $stmt = $conexao->prepare("SELECT c.*, d.nome AS nomeDisciplina
+    // Sua query de UPDATE
+    $stmt = $conexao->prepare("SELECT c.*, d.nome AS nomeDisciplina, d.Professor_id_professor
                                FROM conteudo c
                                JOIN disciplina d ON c.Disciplina_id_disciplina = d.id_disciplina
                                WHERE c.id_conteudo = :id");
@@ -24,6 +31,7 @@ if (isset($_GET['id_conteudo'])) {
     } else {
         $isUpdating = true;
         $nomeDisciplinaAtual = htmlspecialchars($conteudoData['nomeDisciplina']);
+        
     }
 }
 ?>
@@ -44,7 +52,7 @@ if (isset($_GET['id_conteudo'])) {
 
             <label for="codigoConteudo">Código do conteúdo:</label>
             <?php if ($isUpdating): ?>
-                <input type="text" name="codigoConteudo" id="codigoConteudo" placeholder="Digite o código" value="<?php echo htmlspecialchars(isset($conteudoData['codigoConteudo']) ? $conteudoData['codigoConteudo'] : ''); ?>" required readonly>
+                <input type="text" name="codigoConteudo" id="codigoConteudo" placeholder="Digite o código" value="<?php echo htmlspecialchars(isset($conteudoData['codigoConteudo']) ? $conteudoData['codigoConteudo'] : ''); ?>" required>
                 <input type="hidden" name="id_conteudo" value="<?php echo htmlspecialchars(isset($conteudoData['id_conteudo']) ? $conteudoData['id_conteudo'] : ''); ?>">
             <?php else: ?>
                 <input type="text" name="codigoConteudo" id="codigoConteudo" placeholder="Digite o código" required>
@@ -55,7 +63,7 @@ if (isset($_GET['id_conteudo'])) {
             <input type="text" name="tituloConteudo" id="tituloConteudo" placeholder="Digite o título" value="<?php echo htmlspecialchars(isset($conteudoData['titulo']) ? $conteudoData['titulo'] : ''); ?>" required>
             <hr>
 
-            <label for="descricaoConteudo">Descrição:</label>
+            <label for="descricaoConteudo">Descrição do conteúdo:</label>
             <input type="text" name="descricaoConteudo" id="descricaoConteudo" placeholder="Digite a descrição" value="<?php echo htmlspecialchars(isset($conteudoData['descricao']) ? $conteudoData['descricao'] : ''); ?>" required>
             <hr>
 
@@ -64,13 +72,12 @@ if (isset($_GET['id_conteudo'])) {
             <hr>
 
             <label for="professor">Professor:</label>
-            <input type="text" name="professor" id="professor" placeholder="Digite o autor" value="<?php echo htmlspecialchars(isset($conteudoData['professor']) ? $conteudoData['professor'] : ''); ?>" required>
-            <hr>
+             <input type="text" name="professor" id="professor" placeholder="Digite o autor" value="<?php echo htmlspecialchars(isset($conteudoData['professor']) ? $conteudoData['professor'] : ''); ?>" required>
+             <hr>
 
-            <label for="disciplina">Disciplina:</label>
-            <input type="text" name="disciplina" id="disciplina" placeholder="Digite a disciplina" value="<?php echo htmlspecialchars(isset($conteudoData['disciplina']) ? $conteudoData['disciplina'] : ''); ?>" required>
-            <hr>
-
+             <label for="disciplina">Disciplina:</label>
+             <input type="text" name="disciplina" id="disciplina" placeholder="Digite a disciplina" value="<?php echo htmlspecialchars(isset($conteudoData['disciplina']) ? $conteudoData['disciplina'] : ''); ?>" required>
+             <hr>
             <label for="tipo_conteudo">Tipo de conteúdo:</label>
             <input type="text" name="tipo_conteudo" id="tipo_conteudo" placeholder="Digite o tipo" value="<?php echo htmlspecialchars(isset($conteudoData['tipo_conteudo']) ? $conteudoData['tipo_conteudo'] : ''); ?>" required>
             <hr>
@@ -82,9 +89,16 @@ if (isset($_GET['id_conteudo'])) {
                 <hr>
             <?php else: ?>
                 <select name="id_disciplina" required>
-                    <option value="">Selecione um nome de disciplina</option>
+                    <option value="">Selecione uma disciplina (Professor)</option>
                     <?php foreach ($disciplinas as $disciplina): ?>
-                        <option value="<?= $disciplina['id_disciplina'] ?>"><?= htmlspecialchars($disciplina['nome']) ?></option>
+                        <?php
+                            
+                            $professorId = $disciplina['Professor_id_professor'] ?? null; // Pega o ID do professor da disciplina
+                            $professorNome = $professorsLookup[$professorId] ?? 'Professor Desconhecido'; // Busca o nome no mapa
+                        ?>
+                        <option value="<?= $disciplina['id_disciplina'] ?>">
+                            <?= htmlspecialchars($disciplina['nome']) . ' (' . htmlspecialchars($professorNome) . ')' // *** AQUI ESTÁ A LINHA SIMPLES COM A CONCATENAÇÃO *** ?>
+                        </option>
                     <?php endforeach; ?>
                 </select>
                 <hr>

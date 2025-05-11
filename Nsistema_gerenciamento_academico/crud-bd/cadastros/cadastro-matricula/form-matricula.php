@@ -2,7 +2,14 @@
 require_once '../conexao.php';
 
 $alunos = $conexao->query("SELECT id_aluno, matricula, nome FROM aluno")->fetchAll(PDO::FETCH_ASSOC);
-$disciplinas = $conexao->query("SELECT id_disciplina, nome FROM disciplina")->fetchAll(PDO::FETCH_ASSOC);
+$disciplinas = $conexao->query("SELECT id_disciplina, nome, Professor_id_professor FROM disciplina")->fetchAll(PDO::FETCH_ASSOC); // *** MODIFICAÇÃO: Buscar também o ID do professor da disciplina ***
+$professores = $conexao->query("SELECT id_professor, nome FROM professor")->fetchAll(PDO::FETCH_ASSOC); // *** ADIÇÃO: Carregar os dados dos professores ***
+
+$professorsLookup = [];
+foreach ($professores as $professor) {
+    $professorsLookup[$professor['id_professor']] = $professor['nome'];
+}
+
 
 $isUpdating = false;
 $matriculaData = [];
@@ -11,7 +18,6 @@ $nomeAlunoAtual = '';
 $nomeDisciplinaAtual = '';
 $matriculaAlunoAtual = '';
 
-// Verifica se os IDs de aluno e disciplina foram passados na URL (modo de atualização)
 if (isset($_GET['id_aluno']) && !empty($_GET['id_aluno']) &&
     isset($_GET['id_disciplina']) && !empty($_GET['id_disciplina'])) {
 
@@ -34,17 +40,20 @@ if (isset($_GET['id_aluno']) && !empty($_GET['id_aluno']) &&
             $errors = "<p style='color:red;'>Registro de matrícula não encontrado para os IDs fornecidos.</p>";
             $isUpdating = false;
         } else {
-            
+
+            // Busca a informação do aluno na atualização
             $alunoStmt = $conexao->prepare("SELECT nome, matricula FROM aluno WHERE id_aluno = :id");
-            $alunoStmt->execute([':id' => $matriculaData['Aluno_id_aluno']]);
+            $alunoStmt->execute([':id' => ($matriculaData['Aluno_id_aluno'] ?? null)]); // Usando ?? null para segurança
             $alunoInfo = $alunoStmt->fetch(PDO::FETCH_ASSOC);
             $nomeAlunoAtual = htmlspecialchars($alunoInfo['nome'] ?? '');
             $matriculaAlunoAtual = htmlspecialchars($alunoInfo['matricula'] ?? '');
 
-            $disciplinaStmt = $conexao->prepare("SELECT nome FROM disciplina WHERE id_disciplina = :id");
-            $disciplinaStmt->execute([':id' => $matriculaData['Disciplina_id_disciplina']]);
-            $disciplina = $disciplinaStmt->fetch(PDO::FETCH_ASSOC);
-            $nomeDisciplinaAtual = htmlspecialchars($disciplina['nome'] ?? '');
+            $disciplinaStmt = $conexao->prepare("SELECT nome, Professor_id_professor FROM disciplina WHERE id_disciplina = :id"); // *** MODIFICAÇÃO: Buscar o ID do professor na atualização ***
+            $disciplinaStmt->execute([':id' => ($matriculaData['Disciplina_id_disciplina'] ?? null)]); // Usando ?? null para segurança
+            $disciplinaInfo = $disciplinaStmt->fetch(PDO::FETCH_ASSOC);
+            $nomeDisciplinaAtual = htmlspecialchars($disciplinaInfo['nome'] ?? '');
+
+       
         }
     }
 }
@@ -65,13 +74,16 @@ if (isset($_GET['id_aluno']) && !empty($_GET['id_aluno']) &&
             <hr>
 
             <?php if ($isUpdating): ?>
-                <p style="color: orange;">Esta funcionalidade de atualização ainda está em desenvolvimento.</p>
+                 <p style="color: orange;">Esta funcionalidade de atualização ainda está em desenvolvimento.</p>
                 <label for="aluno_id">Aluno:</label>
-                <input type="text" value="<?php echo $nomeAlunoAtual; ?> (<?php echo $matriculaAlunoAtual; ?>)" readonly>
+                 <input type="text" value="<?php echo $nomeAlunoAtual; ?> (<?php echo $matriculaAlunoAtual; ?>)" readonly>
                 <hr>
                 <label for="disciplina_id">Disciplina:</label>
-                <input type="text" value="<?php echo $nomeDisciplinaAtual; ?>" readonly>
+                <input type="text" value="<?php echo $nomeDisciplinaAtual; /* . (isset($professorDisciplinaAtual) ? ' (' . $professorDisciplinaAtual . ')' : '') */ ?>" readonly>
                 <hr>
+                <input type="hidden" name="original_aluno_id" value="<?php echo htmlspecialchars($alunoIdToUpdate); ?>">
+                <input type="hidden" name="original_disciplina_id" value="<?php echo htmlspecialchars($disciplinaIdToUpdate); ?>">
+
             <?php else: ?>
                 <label for="aluno_id">Aluno:</label>
                 <select name="aluno_id" id="aluno_id" required>
@@ -86,10 +98,14 @@ if (isset($_GET['id_aluno']) && !empty($_GET['id_aluno']) &&
 
                 <label for="disciplina_id">Disciplina:</label>
                 <select name="disciplina_id" id="disciplina_id" required>
-                    <option value="">Selecione uma disciplina</option>
+                    <option value="">Selecione uma disciplina (Professor)</option>
                     <?php foreach ($disciplinas as $disciplina): ?>
+                         <?php
+                            $professorId = $disciplina['Professor_id_professor'] ?? null;
+                            $professorNome = $professorsLookup[$professorId] ?? 'Professor Desconhecido';
+                        ?>
                         <option value="<?= htmlspecialchars($disciplina['id_disciplina']) ?>">
-                            <?= htmlspecialchars($disciplina['nome']) ?>
+                            <?= htmlspecialchars($disciplina['nome']) . ' (' . htmlspecialchars($professorNome) . ')' // *** CONCATENAÇÃO NA LINHA DA OPÇÃO *** ?>
                         </option>
                     <?php endforeach; ?>
                 </select>

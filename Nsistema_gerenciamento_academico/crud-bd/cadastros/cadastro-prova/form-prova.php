@@ -59,7 +59,7 @@ if (isset($_GET['id_prova']) && !empty($_GET['id_prova'])) {
             <h2>Formulário: <?php echo $isUpdating ? 'Atualizar' : 'Cadastro'; ?> Prova</h2>
             <hr>
 
-            <label for="codigoProva">Codigo da prova:</label>
+            <label for="codigoProva">Código da prova:</label>
             <?php if ($isUpdating): ?>
                 <input type="text" name="codigoProva" id="codigoProva" placeholder="Digite codigo" value="<?php echo htmlspecialchars($provaData['codigoProva'] ?? ''); ?>" required>
                 <input type="hidden" name="id_prova" value="<?php echo htmlspecialchars($provaData['id_prova'] ?? ''); ?>">
@@ -76,7 +76,7 @@ if (isset($_GET['id_prova']) && !empty($_GET['id_prova'])) {
             <input type="text" name="disciplina" id="disciplina" placeholder="Digite tipo de prova" value="<?php echo htmlspecialchars($provaData['disciplina'] ?? ''); ?>" required>
             <hr>
 
-            <label for="conteudo">Conteudo de prova:</label>
+            <label for="conteudo">Conteúdo de prova:</label>
             <input type="text" name="conteudo" id="conteudo" placeholder="Digite conteudo" value="<?php echo htmlspecialchars($provaData['conteudo'] ?? ''); ?>" required>
             <hr>
 

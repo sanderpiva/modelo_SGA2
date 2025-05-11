@@ -5,6 +5,11 @@ $disciplinas = $conexao->query("SELECT * FROM disciplina")->fetchAll(PDO::FETCH_
 $professores = $conexao->query("SELECT * FROM professor")->fetchAll(PDO::FETCH_ASSOC);
 $provas = $conexao->query("SELECT * FROM prova")->fetchAll(PDO::FETCH_ASSOC);
 
+$professorsLookup = [];
+foreach ($professores as $professor) {
+    $professorsLookup[$professor['id_professor']] = $professor['nome'];
+}
+
 $isUpdating = false;
 $questaoProvaData = [];
 $errors = "";
@@ -28,21 +33,23 @@ if (isset($_GET['id_questaoProva']) && !empty($_GET['id_questaoProva'])) {
             $errors = "<p style='color:red;'>Questão com ID " . htmlspecialchars($idQuestaoToUpdate) . " não encontrada.</p>";
             $isUpdating = false;
         } else {
-
+            
             foreach ($disciplinas as $disciplina) {
-                if ($disciplina['id_disciplina'] == $questaoProvaData['Prova_Disciplina_id_disciplina']) {
+                
+                if ($disciplina['id_disciplina'] == ($questaoProvaData['Prova_Disciplina_id_disciplina'] ?? null)) {
                     $nomeDisciplinaAtual = $disciplina['nome'];
                     break;
                 }
             }
             foreach ($professores as $professor) {
-                if ($professor['id_professor'] == $questaoProvaData['Prova_Disciplina_Professor_id_professor']) {
+                
+                if ($professor['id_professor'] == ($questaoProvaData['Prova_Disciplina_Professor_id_professor'] ?? null)) {
                     $nomeProfessorAtual = $professor['nome'];
                     break;
                 }
             }
             foreach ($provas as $prova) {
-                if ($prova['id_prova'] == $questaoProvaData['Prova_id_prova']) {
+                if ($prova['id_prova'] == ($questaoProvaData['Prova_id_prova'] ?? null)) {
                     $nomeProvaAtual = $prova['codigoProva'];
                     break;
                 }
@@ -66,7 +73,7 @@ if (isset($_GET['id_questaoProva']) && !empty($_GET['id_questaoProva'])) {
             <h2>Formulário: <?php echo $isUpdating ? 'Atualizar' : 'Cadastro'; ?> Questão Prova</h2>
             <hr>
 
-            <label for="codigoQuestaoProva">Codigo Questao:</label>
+            <label for="codigoQuestaoProva">Código Questão:</label>
             <?php if ($isUpdating): ?>
                 <input type="text" name="codigoQuestaoProva" id="codigoQuestaoProva" placeholder="Digite codigo questao" value="<?php echo htmlspecialchars($questaoProvaData['codigoQuestao'] ?? ''); ?>" required>
                 <input type="hidden" name="id_questao" value="<?php echo htmlspecialchars($questaoProvaData['id_questao'] ?? ''); ?>">
@@ -75,7 +82,7 @@ if (isset($_GET['id_questaoProva']) && !empty($_GET['id_questaoProva'])) {
             <?php endif; ?>
             <hr>
 
-            <label for="descricao_questao">Descricao prova:</label>
+            <label for="descricao_questao">Descrição questão de prova:</label>
             <input type="text" name="descricao_questao" id="descricao_questao" placeholder="Descricao prova" value="<?php echo htmlspecialchars($questaoProvaData['descricao'] ?? ''); ?>" required>
             <hr>
 
@@ -93,6 +100,10 @@ if (isset($_GET['id_questaoProva']) && !empty($_GET['id_questaoProva'])) {
                 <select name="id_prova" required>
                     <option value="">Selecione codigo de prova</option>
                     <?php foreach ($provas as $prova): ?>
+                         <?php
+                             // Para exibir algo mais sobre a prova aqui (disciplina, professor),
+                             // Bastaria realizar joins nas queries de prova ou mapas de lookup adicionais.
+                         ?>
                         <option value="<?= $prova['id_prova'] ?>"><?= htmlspecialchars($prova['codigoProva']) ?></option>
                     <?php endforeach; ?>
                 </select>
@@ -107,9 +118,16 @@ if (isset($_GET['id_questaoProva']) && !empty($_GET['id_questaoProva'])) {
             <?php else: ?>
                 <label for="id_disciplina">Disciplina:</label>
                 <select name="id_disciplina" required>
-                    <option value="">Selecione uma disciplina</option>
+                    <option value="">Selecione uma disciplina (Professor)</option>
                     <?php foreach ($disciplinas as $disciplina): ?>
-                        <option value="<?= $disciplina['id_disciplina'] ?>"><?= htmlspecialchars($disciplina['nome']) ?></option>
+                         <?php
+                            
+                            $professorId = $disciplina['Professor_id_professor'] ?? null; // Pega o ID do professor da disciplina
+                            $professorNome = $professorsLookup[$professorId] ?? 'Professor Desconhecido'; // Busca o nome no mapa
+                        ?>
+                        <option value="<?= $disciplina['id_disciplina'] ?>">
+                            <?= htmlspecialchars($disciplina['nome']) . ' (' . htmlspecialchars($professorNome) . ')' // *** CONCATENAÇÃO NA LINHA DA OPÇÃO *** ?>
+                        </option>
                     <?php endforeach; ?>
                 </select>
                 <hr>
@@ -125,6 +143,7 @@ if (isset($_GET['id_questaoProva']) && !empty($_GET['id_questaoProva'])) {
                 <select name="id_professor" required>
                     <option value="">Selecione um professor</option>
                     <?php foreach ($professores as $professor): ?>
+                
                         <option value="<?= $professor['id_professor'] ?>"><?= htmlspecialchars($professor['nome']) ?></option>
                     <?php endforeach; ?>
                 </select>
