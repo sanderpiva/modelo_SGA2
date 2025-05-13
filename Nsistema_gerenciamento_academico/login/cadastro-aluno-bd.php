@@ -1,20 +1,34 @@
 <?php
 
-require_once "conexao-bd.php";
+require_once "conexao.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-
-    $nome   = $_POST['nome'] ?? '';
-    $login   = $_POST['login'] ?? '';
+    $matricula = $_POST['matricula'] ?? '';
+    $nome   = $_POST['nomeAluno'] ?? '';
+    $cpf    = $_POST['cpf'] ?? '';
+    $email  = $_POST['emailAluno'] ?? '';
+    $data_nascimento = $_POST['data_nascimento'] ?? '';
+    $endereco = $_POST['enderecoAluno'] ?? '';
+    $cidade = $_POST['cidadeAluno'] ?? '';  
+    $telefone = $_POST['telefoneAluno'] ?? '';
+    $id_turma  = $_POST['id_turma'] ?? ''; 
     $senha  = $_POST['senha'] ?? '';
     $hashSenha = password_hash($senha, PASSWORD_DEFAULT);
+
     try{
-        $sql = "INSERT INTO aluno (nome, login, senha) VALUES (:nome, :login, :senha)";
+        $sql = "INSERT INTO aluno (matricula, nome, cpf, email, data_nascimento, endereco, cidade, telefone, Turma_id_turma, senha) VALUES (:matricula, :nome, :cpf, :email, :data_nascimento, :endereco, :cidade, :telefone, :id_turma, :senha)";
         $stmt = $conexao->prepare($sql);
         $stmt->execute([
+            ':matricula' => $matricula,
             ':nome'   => $nome,
-            ':login'   => $login,
+            ':cpf'      => $cpf,
+            ':email'    => $email,
+            ':data_nascimento' => $data_nascimento,
+            ':endereco' => $endereco,
+            ':cidade'   => $cidade,
+            ':telefone' => $telefone,
+            ':id_turma' => $id_turma,
             ':senha'  => $hashSenha
         ]);
 

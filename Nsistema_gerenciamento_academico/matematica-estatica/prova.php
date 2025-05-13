@@ -15,7 +15,10 @@
         <input type="text" name="nome" id="nome" required>
         <h3>Email</h3>
         <input type="email" name="email" id="email" required>
-
+        <h3>Turma</h3>
+        <input type="text" name="turma" id="turma" required>
+        <hr>
+    
         <h3>Questão 1</h3>
         <p>Qual o valor do quarto termo da PA: a1 = 2, r = 3?</p>
         <input type="radio" name="q1" value="a"> a) 11 <br>
@@ -105,6 +108,7 @@
 
             $nome= $_POST['nome'];
             $email= $_POST['email'];
+            $turma= $_POST['turma'];
             $q1= $_POST['q1'];
             $q2= $_POST['q2'];
             $q3= $_POST['q3'];
@@ -112,7 +116,7 @@
             $media = $porcentagem/10;
 
             $sql="Insert into tabeladados VALUES('$nome','$email',
-            '$q1','$q2','$q3','$q4','$media')";
+            '$q1','$q2','$q3','$q4','$media' ,'$turma')";
             $res=mysqli_query($conn, $sql);
             $lin=mysqli_affected_rows($conn);
             if($lin>0){

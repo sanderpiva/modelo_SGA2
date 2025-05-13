@@ -80,7 +80,9 @@
 
     <script>
         function atualizarAluno(id_aluno) {
-            window.location.href = "../../cadastros/cadastro-aluno/form-aluno.php?id_aluno=" + id_aluno;
+            //window.location.href = "../../cadastros/cadastro-aluno/form-aluno.php?id_aluno=" + id_aluno;
+            window.location.href = "../../../login/cadastro-aluno.php?id_aluno=" + encodeURIComponent(id_aluno);
+        
         }
 
         function excluirAluno(id_aluno) {

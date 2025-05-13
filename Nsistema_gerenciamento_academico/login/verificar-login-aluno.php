@@ -1,13 +1,13 @@
 <?php
 
-require_once "conexao-bd.php";
+require_once "conexao.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
 	$login   = $_POST['login'] ?? '';
 	$senhaDigitada  = $_POST['senha'] ?? '';
 	 try {
-        $sql = "SELECT * FROM aluno WHERE login = :login";
+        $sql = "SELECT * FROM aluno WHERE email = :login";
         $stmt = $conexao->prepare($sql);
         $stmt->bindParam(':login', $login, PDO::PARAM_STR);
         $stmt->execute();

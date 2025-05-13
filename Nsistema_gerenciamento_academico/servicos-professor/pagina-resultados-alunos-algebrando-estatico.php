@@ -19,6 +19,7 @@
 				<td>q3<td/>
 				<td>q4<td/>
 				<td>nota<td/>
+				<td>turma<td/>
 			<tr/>
 
 			<?php
@@ -42,9 +43,10 @@
 					$q3=$reg[2];
 					$q4=$reg[5];
 					$nota=$reg[6];
+					$turma=$reg[7];
 					
 					echo "<tr>";
-					echo "<td>$nome<td/><td>$email<td/><td>$q1<td/><td>$q2<td/><td>$q3<td/><td>$q4<td/><td>$nota<td/>";
+					echo "<td>$nome<td/><td>$email<td/><td>$q1<td/><td>$q2<td/><td>$q3<td/><td>$q4<td/><td>$nota<td/><td>$turma<td/>";
 					echo "<tr/>";
 
 

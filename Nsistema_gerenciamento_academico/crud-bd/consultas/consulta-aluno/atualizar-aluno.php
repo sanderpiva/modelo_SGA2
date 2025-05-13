@@ -4,13 +4,13 @@ require_once '../conexao.php';
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $id_aluno = $_POST['id_aluno'];
     $matricula = $_POST['matricula'];
-    $nomeAluno = $_POST['nomeAluno'];
+    $nomeAluno = $_POST['nome'];
     $cpf = $_POST['cpf'];
-    $emailAluno = $_POST['emailAluno'];
+    $emailAluno = $_POST['email'];
     $data_nascimento = $_POST['data_nascimento'];
-    $enderecoAluno = $_POST['enderecoAluno'];
-    $cidadeAluno = $_POST['cidadeAluno'];
-    $telefoneAluno = $_POST['telefoneAluno'];
+    $enderecoAluno = $_POST['endereco'];
+    $cidadeAluno = $_POST['cidade'];
+    $telefoneAluno = $_POST['telefone'];
 
     $stmt = $conexao->prepare("UPDATE aluno SET
         matricula = :matricula,

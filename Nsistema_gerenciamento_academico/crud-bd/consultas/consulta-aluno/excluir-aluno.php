@@ -13,7 +13,7 @@ if (isset($_GET['id_aluno']) && !empty($_GET['id_aluno'])) {
 
         if ($count_matriculas > 0) {
             echo "<p style='color: red;'>Não é possível excluir este aluno pois ele está matriculado em uma ou mais disciplinas. Por favor, remova as matrículas deste aluno antes de excluí-lo.</p>";
-            echo '<p><a href="../../consultas/consultaMatricula/consultaMatricula.php">Verificar Matrículas</a></p>';
+            echo '<p><a href="../../consultas/consulta-matricula/consulta-matricula.php">Verificar Matrículas</a></p>';
         } else {
             
             $stmt_delete_aluno = $conexao->prepare("DELETE FROM aluno WHERE id_aluno = :id");

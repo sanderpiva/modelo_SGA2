@@ -96,7 +96,8 @@ if (isset($_GET['id_prova']) && !empty($_GET['id_prova'])) {
                 <select name="id_disciplina" required>
                     <option value="">Selecione codigo disciplina</option>
                     <?php foreach ($disciplinas as $disciplina): ?>
-                        <option value="<?= $disciplina['id_disciplina'] ?>"><?= htmlspecialchars($disciplina['codigoDisciplina']) ?></option>
+                        <option value="<?= $disciplina['id_disciplina'] ?>"><?= htmlspecialchars($disciplina['codigoDisciplina']) ?> - <?= htmlspecialchars($disciplina['professor']) ?></option>
+                     
                     <?php endforeach; ?>
                 </select>
             <?php endif; ?>

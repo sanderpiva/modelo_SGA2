@@ -69,7 +69,7 @@ if (isset($_GET['id_professor']) && !empty($_GET['id_professor'])) {
                 <input type="hidden" name="acao" value="atualizar">
             <?php else: ?>
                 <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" required><br><br>
+                <input type="password" id="senha" name="senha" placeholder="Digite a senha" required><br><br>
                 <input type="hidden" name="acao" value="cadastrar">
             <?php endif; ?>
 
