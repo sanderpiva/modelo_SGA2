@@ -1,20 +1,25 @@
 <?php
 
-require_once "conexao-bd.php";
+require_once "conexao.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-
-    $nome   = $_POST['nome'] ?? '';
-    $login   = $_POST['login'] ?? '';
+    $registro = $_POST['registroProfessor'] ?? '';
+    $nome   = $_POST['nomeProfessor'] ?? '';
+    $login   = $_POST['emailProfessor'] ?? '';
+    $endereco = $_POST['enderecoProfessor'] ?? '';
+    $telefone = $_POST['telefoneProfessor'] ?? '';
     $senha  = $_POST['senha'] ?? '';
     $hashSenha = password_hash($senha, PASSWORD_DEFAULT);
     try{
-        $sql = "INSERT INTO professor (nome, login, senha) VALUES (:nome, :login, :senha)";
+        $sql = "INSERT INTO professor (registroProfessor, nome, email, endereco, telefone, senha) VALUES (:registroProfessor, :nome, :email, :endereco, :telefone, :senha)";
         $stmt = $conexao->prepare($sql);
         $stmt->execute([
+            ':registroProfessor' => $registro,
             ':nome'   => $nome,
-            ':login'   => $login,
+            ':email'   => $login,
+            ':endereco' => $endereco,
+            ':telefone' => $telefone,
             ':senha'  => $hashSenha
         ]);
 

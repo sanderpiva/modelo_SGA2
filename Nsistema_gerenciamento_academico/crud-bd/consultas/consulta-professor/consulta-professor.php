@@ -57,7 +57,8 @@
 
     <script>
         function atualizarProfessor(id_professor) {
-            window.location.href = "../../cadastros/cadastro-professor/form-professor.php?id_professor=" + encodeURIComponent(id_professor);
+            //"../../cadastros/cadastro-professor/form-professor.php?id_professor=" + encodeURIComponent(id_professor);
+            window.location.href = "../../../login/cadastro-professor.php?id_professor=" + encodeURIComponent(id_professor);
         }
 
         function excluirProfessor(id_professor) {

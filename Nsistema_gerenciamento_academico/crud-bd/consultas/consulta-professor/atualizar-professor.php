@@ -33,7 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id_professor'])) {
         exit(); 
     } else {
         $error = "Erro ao atualizar professor.";
-        $pathToForm = '../../cadastros/cadastro-professor/form-professor.php';
+        //'../../cadastros/cadastro-professor/form-professor.php';
+        $pathToForm = '../../../login/cadastro-professor.php';
         header("Location: " . $pathToForm . "?id_professor=" . urlencode($id_professor) . "&erros=" . urlencode($error));
         exit(); 
     }
