@@ -82,14 +82,14 @@ if (isset($_GET['id_conteudo'])) {
             <input type="text" name="tipo_conteudo" id="tipo_conteudo" placeholder="Digite o tipo" value="<?php echo htmlspecialchars(isset($conteudoData['tipo_conteudo']) ? $conteudoData['tipo_conteudo'] : ''); ?>" required>
             <hr>
 
-            <label for="id_disciplina">Nome da disciplina:</label>
+            <label for="id_disciplina">Código da disciplina:</label>
             <?php if ($isUpdating): ?>
                 <input type="text" value="<?php echo $nomeDisciplinaAtual; ?>" readonly required>
                 <input type="hidden" name="id_disciplina" value="<?php echo htmlspecialchars(isset($conteudoData['Disciplina_id_disciplina']) ? $conteudoData['Disciplina_id_disciplina'] : ''); ?>">
                 <hr>
             <?php else: ?>
                 <select name="id_disciplina" required>
-                    <option value="">Selecione uma disciplina (Professor)</option>
+                    <option value="">Selecione código da disciplina (Professor)</option>
                     <?php foreach ($disciplinas as $disciplina): ?>
                         <?php
                             
@@ -97,7 +97,7 @@ if (isset($_GET['id_conteudo'])) {
                             $professorNome = $professorsLookup[$professorId] ?? 'Professor Desconhecido'; // Busca o nome no mapa
                         ?>
                         <option value="<?= $disciplina['id_disciplina'] ?>">
-                            <?= htmlspecialchars($disciplina['nome']) . ' (' . htmlspecialchars($professorNome) . ')' // *** AQUI ESTÁ A LINHA SIMPLES COM A CONCATENAÇÃO *** ?>
+                            <?= htmlspecialchars($disciplina['codigoDisciplina']) . ' (' . htmlspecialchars($disciplina['professor']) . ')' // *** AQUI ESTÁ A LINHA SIMPLES COM A CONCATENAÇÃO *** ?>
                         </option>
                     <?php endforeach; ?>
                 </select>

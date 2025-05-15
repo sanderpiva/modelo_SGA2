@@ -131,7 +131,7 @@ if (isset($_GET['id_resposta']) && !empty($_GET['id_resposta'])) {
                 <select name="id_prova" id="id_prova" required>
                     <option value="">Selecione uma prova</option>
                     <?php foreach ($provas as $prova): ?>
-                        <option value="<?= htmlspecialchars($prova['id_prova']) ?>"><?= htmlspecialchars($prova['codigoProva']) ?></option>
+                        <option value="<?= htmlspecialchars($prova['id_prova']) ?>"><?= htmlspecialchars($prova['codigoProva']) ?> - <?= htmlspecialchars($prova['professor']) ?></option>
                     <?php endforeach; ?>
                 </select>
             <?php endif; ?>

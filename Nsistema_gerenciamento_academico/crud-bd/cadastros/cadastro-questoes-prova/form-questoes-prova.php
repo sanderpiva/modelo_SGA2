@@ -104,7 +104,7 @@ if (isset($_GET['id_questaoProva']) && !empty($_GET['id_questaoProva'])) {
                              // Para exibir algo mais sobre a prova aqui (disciplina, professor),
                              // Bastaria realizar joins nas queries de prova ou mapas de lookup adicionais.
                          ?>
-                        <option value="<?= $prova['id_prova'] ?>"><?= htmlspecialchars($prova['codigoProva']) ?></option>
+                        <option value="<?= $prova['id_prova'] ?>"><?= htmlspecialchars($prova['codigoProva']) ?> - <?= htmlspecialchars($prova['professor']) ?></option>
                     <?php endforeach; ?>
                 </select>
                 <hr>

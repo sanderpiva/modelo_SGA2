@@ -102,7 +102,7 @@ if (isset($_GET['id_disciplina'])) {
                 <select name="id_professor" required>
                     <option value="">Selecione um registro de professor</option>
                     <?php foreach ($professores as $professor): ?>
-                        <option value="<?= $professor['id_professor'] ?>"><?= htmlspecialchars($professor['registroProfessor']) ?></option>
+                        <option value="<?= $professor['id_professor'] ?>"><?= htmlspecialchars($professor['registroProfessor']) ?> - <?= htmlspecialchars($professor['nome']) ?></option>
                     <?php endforeach; ?>
                 </select>
                 <hr>

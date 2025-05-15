@@ -33,7 +33,7 @@ if (isset($_GET['id_professor']) && !empty($_GET['id_professor'])) {
 <body class="servicos_forms">
 
     <div class="form_container">
-        <form class="form" action="<?php echo $isUpdating ? '../crud-bd/consultas/consulta-professor/atualizar-professor.php' : 'cadastro-professor-bd.php'; ?>" method="POST">
+        <form class="form" action="<?php echo $isUpdating ? '../crud-bd/consultas/consulta-professor/atualizar-professor.php' : 'valida-inserir-professor.php'; ?>" method="POST">
             <h2><?php echo $isUpdating ? 'Atualizar Professor' : 'Cadastro Professor'; ?></h2>
             <hr>
 
@@ -81,4 +81,3 @@ if (isset($_GET['id_professor']) && !empty($_GET['id_professor'])) {
     </div>
     <a href="<?php echo $isUpdating ? '../servicos-professor/pagina-servicos-professor.php' : '../index.php'; ?>"><?php echo $isUpdating ? 'Serviços' : 'Home Page'; ?></a>
 </body>
-</html>

@@ -41,7 +41,7 @@ if (isset($_GET['id_aluno']) && !empty($_GET['id_aluno'])) {
 <body class="servicos_forms">
 
     <div class="form_container">
-        <form class="form" action="<?php echo $isUpdating ? '../crud-bd/consultas/consulta-aluno/atualizar-aluno.php' : 'cadastro-aluno-bd.php'; ?>" method="POST">
+        <form class="form" action="<?php echo $isUpdating ? '../crud-bd/consultas/consulta-aluno/atualizar-aluno.php' : 'valida-inserir-aluno.php'; ?>" method="POST">
             <h2><?php echo $isUpdating ? 'Atualizar Aluno' : 'Cadastro Aluno'; ?></h2>
             <hr>
 
@@ -55,7 +55,7 @@ if (isset($_GET['id_aluno']) && !empty($_GET['id_aluno'])) {
             <hr>
 
             <label for="nome">Nome:</label>
-            <input type="text" name="nome" id="nomeAluno" placeholder="Digite o nome" value="<?php echo htmlspecialchars($alunoData['nome'] ?? ''); ?>" required>
+            <input type="text" name="nomeAluno" id="nomeAluno" placeholder="Digite o nome" value="<?php echo htmlspecialchars($alunoData['nome'] ?? ''); ?>" required>
             <hr>
 
             <label for="cpf">CPF:</label>
@@ -63,7 +63,7 @@ if (isset($_GET['id_aluno']) && !empty($_GET['id_aluno'])) {
             <hr>
 
             <label for="email">Email:</label>
-            <input type="email" name="email" id="emailAluno" placeholder="Digite o email" value="<?php echo htmlspecialchars($alunoData['email'] ?? ''); ?>" required>
+            <input type="email" name="emailAluno" id="emailAluno" placeholder="Digite o email" value="<?php echo htmlspecialchars($alunoData['email'] ?? ''); ?>" required>
             <hr>
 
             <label for="data_nascimento">Data nascimento:</label>
@@ -71,22 +71,28 @@ if (isset($_GET['id_aluno']) && !empty($_GET['id_aluno'])) {
             <hr>
 
             <label for="endereco">Endereço:</label>
-            <input type="text" name="endereco" id="enderecoAluno" placeholder="Digite o endereço" value="<?php echo htmlspecialchars($alunoData['endereco'] ?? ''); ?>" required>
+            <input type="text" name="enderecoAluno" id="enderecoAluno" placeholder="Digite o endereço" value="<?php echo htmlspecialchars($alunoData['endereco'] ?? ''); ?>" required>
             <hr>
 
             <label for="cidade">Cidade:</label>
-            <input type="text" name="cidade" id="cidadeAluno" placeholder="Digite a cidade" value="<?php echo htmlspecialchars($alunoData['cidade'] ?? ''); ?>" required>
+            <input type="text" name="cidadeAluno" id="cidadeAluno" placeholder="Digite a cidade" value="<?php echo htmlspecialchars($alunoData['cidade'] ?? ''); ?>" required>
             <hr>
 
             <label for="telefone">Telefone:</label>
-            <input type="text" name="telefone" id="telefoneAluno" placeholder="Digite o telefone" value="<?php echo htmlspecialchars($alunoData['telefone'] ?? ''); ?>" required>
+            <input type="text" name="telefoneAluno" id="telefoneAluno" placeholder="Digite o telefone" value="<?php echo htmlspecialchars($alunoData['telefone'] ?? ''); ?>" required>
             <hr>
 
             <label for="id_turma">Nome da turma:</label>
             <?php if ($isUpdating): ?>
-                <input type="text" value="<?php echo $nomeTurmaAtual; ?>" readonly required>
-                <input type="hidden" name="id_turma" value="<?php echo htmlspecialchars($alunoData['Turma_id_turma'] ?? ''); ?>">
+                                
+                <select name="id_turma" required>
+                    <option value="">Selecione um nome de turma</option>
+                     <?php foreach ($turmas as $turma): ?>
+                        <option value="<?= $turma['id_turma'] ?>" <?php if ($alunoData['Turma_id_turma'] == $turma['id_turma']) echo 'selected'; ?>><?= htmlspecialchars($turma['nomeTurma']) ?></option>
+                    <?php endforeach; ?>
+                </select>
                 <hr>
+
             <?php else: ?>
                 <select name="id_turma" required>
                     <option value="">Selecione um nome de turma</option>
@@ -114,6 +120,6 @@ if (isset($_GET['id_aluno']) && !empty($_GET['id_aluno'])) {
             <?php echo $errors; ?>
         <?php endif; ?>
     </div>
-    <a href="<?php echo $isUpdating ? '../servicos-aluno/pagina-servicos-aluno.php' : '../index.php'; ?>"><?php echo $isUpdating ? 'Serviços' : 'Home Page'; ?></a>
+    <a href="<?php echo $isUpdating ? '../servicos-professor/pagina-servicos-professor.php' : '../index.php'; ?>"><?php echo $isUpdating ? 'Serviços' : 'Home Page'; ?></a>
 </body>
 </html>

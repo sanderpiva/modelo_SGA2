@@ -4,13 +4,14 @@ require_once '../conexao.php';
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $id_aluno = $_POST['id_aluno'];
     $matricula = $_POST['matricula'];
-    $nomeAluno = $_POST['nome'];
+    $nomeAluno = $_POST['nomeAluno'];
     $cpf = $_POST['cpf'];
-    $emailAluno = $_POST['email'];
+    $emailAluno = $_POST['emailAluno'];
     $data_nascimento = $_POST['data_nascimento'];
-    $enderecoAluno = $_POST['endereco'];
-    $cidadeAluno = $_POST['cidade'];
-    $telefoneAluno = $_POST['telefone'];
+    $enderecoAluno = $_POST['enderecoAluno'];
+    $cidadeAluno = $_POST['cidadeAluno'];
+    $telefoneAluno = $_POST['telefoneAluno'];
+    $id_turma = $_POST['id_turma'];
 
     $stmt = $conexao->prepare("UPDATE aluno SET
         matricula = :matricula,
@@ -20,7 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         data_nascimento = :data_nascimento,
         endereco = :endereco,
         cidade = :cidade,
-        telefone = :telefone
+        telefone = :telefone,
+        Turma_id_turma = :id_turma
         WHERE id_aluno = :id");
 
     $stmt->execute([
@@ -32,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ':endereco' => $enderecoAluno,
         ':cidade' => $cidadeAluno,
         ':telefone' => $telefoneAluno,
+        ':id_turma' => $id_turma,
         ':id' => $id_aluno
     ]);
 
